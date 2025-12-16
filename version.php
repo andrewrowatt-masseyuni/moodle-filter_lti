@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version  = 2021121602;
-$plugin->requires = 2014051200;
+$plugin->version  = 2025121602;
+$plugin->requires = 2024100100;
 $plugin->component = 'filter_lti';
-$plugin->release = '1.0.2 (Build: 2021121602)';
+$plugin->release = '1.0.3 (Build: 2025121602)';
 $plugin->maturity = MATURITY_STABLE;

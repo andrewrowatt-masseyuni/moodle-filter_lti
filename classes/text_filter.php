@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_lti;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -24,7 +26,7 @@ defined('MOODLE_INTERNAL') || die;
  * @author     Andrew Rowatt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_lti extends moodle_text_filter {
+class text_filter extends \core_filters\text_filter {
     /**
      * Function filter replaces any lti-sources.
      */
@@ -34,7 +36,12 @@ class filter_lti extends moodle_text_filter {
         if (empty($COURSE->id) || $COURSE->id == 0) {
             return $text;
         }
+
         if (strpos($text, '{lti:') === false) {
+            return $text;
+        }
+
+        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER) === false) {
             return $text;
         }
 
@@ -42,25 +49,29 @@ class filter_lti extends moodle_text_filter {
         $cms = $modinfo->get_cms();
 
         foreach ($cms as $cm) {
-            if ($cm->modname != 'lti') {
+            if ($cm->modname != 'page') {
                 continue;
             }
-            $params = (object) array(
-                'id' => $cm->id,
-                'name' => $cm->modname,
-                'url' => $cm->url,
-                'wwwroot' => $CFG->wwwroot,
-            );
-            switch ($cm->modname) {
-                case 'lti':
+
+            foreach ($matches as $match) {
+                if (strcasecmp($cm->name,$match[2]) == 0) {
+                    $options = isset($match[3]) ? $match[3] : '';
+                    $params = (object) array(
+                        'id' => $cm->id,
+                        'type' => $match[1],
+                        'options' => isset($match[3]) ? $match[3] : '',
+                        'title' => $cm->name,
+                        'url' => $cm->url,
+                        'wwwroot' => $CFG->wwwroot,
+                    );
+
                     $embed = $OUTPUT->render_from_template('filter_lti/embed-lti', $params);
-                    //$embed_mediasite = $OUTPUT->render_from_template('filter_lti/embed-lti-mediasite', $params);
-                    //$embed_padlet = $OUTPUT->render_from_template('filter_lti/embed-lti-padlet', $params);
-                break;
+
+                    $text = str_ireplace("{{$match[1]}:{$cm->name}". ($options != '' ? "|$options" : '') . "}", $embed, $text);
+
+                    echo "{{$match[1]}:{$cm->name}". ($options != '' ? "|$options" : '') . "}";
+                }
             }
-            //$text = str_replace('{lti:mediasite:' . $cm->name . '}', $embed_mediasite, $text);
-            //$text = str_replace('{lti:padlet:' . $cm->name . '}', $embed_padlet, $text);
-            $text = str_replace('{lti:' . $cm->name . '}', $embed, $text);
         }
 
         return $text;
