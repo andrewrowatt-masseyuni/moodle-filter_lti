@@ -16,8 +16,6 @@
 
 namespace filter_lti;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * This is the filter itself.
  *
@@ -27,10 +25,8 @@ defined('MOODLE_INTERNAL') || die;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class text_filter extends \core_filters\text_filter {
-    /**
-     * Function filter replaces any lti-sources.
-     */
-    public function filter($text, array $options = array()) {
+    #[\Override]
+    public function filter($text, array $options = []) {
         global $CFG, $DB, $COURSE, $OUTPUT;
 
         if (empty($COURSE->id) || $COURSE->id == 0) {
@@ -54,22 +50,22 @@ class text_filter extends \core_filters\text_filter {
             }
 
             foreach ($matches as $match) {
-                if (strcasecmp($cm->name,$match[2]) == 0) {
+                if (strcasecmp($cm->name, $match[2]) == 0) {
                     $options = isset($match[3]) ? $match[3] : '';
-                    $params = (object) array(
+                    $params = (object) [
                         'id' => $cm->id,
                         'type' => $match[1],
                         'options' => isset($match[3]) ? $match[3] : '',
                         'title' => $cm->name,
                         'url' => $cm->url,
                         'wwwroot' => $CFG->wwwroot,
-                    );
+                    ];
 
                     $embed = $OUTPUT->render_from_template('filter_lti/embed-lti', $params);
 
-                    $text = str_ireplace("{{$match[1]}:{$cm->name}". ($options != '' ? "|$options" : '') . "}", $embed, $text);
+                    $text = str_ireplace("{{$match[1]}:{$cm->name}" . ($options != '' ? "|$options" : '') . "}", $embed, $text);
 
-                    echo "{{$match[1]}:{$cm->name}". ($options != '' ? "|$options" : '') . "}";
+                    echo "{{$match[1]}:{$cm->name}" . ($options != '' ? "|$options" : '') . "}";
                 }
             }
         }

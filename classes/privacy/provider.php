@@ -15,23 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    filter_h5p
- * @copyright  2018 Digital Education Society (http://www.dibig.at)
- * @author     Robert Schrenk
+ * Privacy Subsystem implementation for filter_lti.
+ *
+ * @package    filter_lti
+ * @copyright  2022 Massey University
+ * @author     Andrew Rowatt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace filter_h5p\privacy;
-
-defined('MOODLE_INTERNAL') || die;
+namespace filter_lti\privacy;
 
 /**
- * Null provider for privacy api.
+ * Privacy Subsystem for filter_data implementing null_provider.
+ *
+ * @copyright  2022 Massey University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
-
     /**
-     * Return the reason why null provider suffices.
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
      */
     public static function get_reason(): string {
         return 'privacy:metadata';
