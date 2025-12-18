@@ -27,21 +27,20 @@ namespace filter_lti;
 class text_filter extends \core_filters\text_filter {
     #[\Override]
     public function filter($text, array $options = []) {
-        global $CFG, $DB, $COURSE, $OUTPUT;
+        global $OUTPUT, $PAGE;
 
-        if (empty($COURSE->id) || $COURSE->id == 0) {
+        // This part based on filter activitynames.
+        $coursectx = $this->context->get_course_context(false);
+        if (!$coursectx) {
             return $text;
         }
-
-        if (strpos($text, '{lti:') === false) {
-            return $text;
-        }
+        $courseid = $coursectx->instanceid;
 
         if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER) === false) {
             return $text;
         }
 
-        $modinfo = get_fast_modinfo($COURSE);
+        $modinfo = get_fast_modinfo($courseid);
         $cms = $modinfo->get_cms();
 
         foreach ($cms as $cm) {
@@ -56,17 +55,37 @@ class text_filter extends \core_filters\text_filter {
                         'id' => $cm->id,
                         'type' => $match[1],
                         'options' => isset($match[3]) ? $match[3] : '',
+                        'cmid' => $cm->id,
                         'title' => $cm->name,
                         'url' => $cm->url,
-                        'wwwroot' => $CFG->wwwroot,
                     ];
 
                     $embed = $OUTPUT->render_from_template('filter_lti/embed-lti', $params);
 
                     $text = str_ireplace("{{$match[1]}:{$cm->name}" . ($options != '' ? "|$options" : '') . "}", $embed, $text);
-
-                    echo "{{$match[1]}:{$cm->name}" . ($options != '' ? "|$options" : '') . "}";
                 }
+            }
+        }
+
+        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER)) {
+            $unmatchednames = [];
+            foreach ($matches as $match) {
+                $unmatchednames[] = $match[2];
+            }
+
+            $unmatchednamescombined = implode(', ', $unmatchednames);
+
+            if (has_capability('moodle/course:manageactivities', $PAGE->context)) {
+                $unmatchedtagnotification = $OUTPUT->render_from_template(
+                    'filter_lti/unmatched-tags',
+                    ['message' => get_string(
+                        'oneormoretagsunmatched',
+                        'filter_lti',
+                        trim($unmatchednamescombined)
+                    ),
+                    ]
+                );
+                $text .= $unmatchedtagnotification;
             }
         }
 
