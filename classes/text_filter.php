@@ -52,12 +52,10 @@ class text_filter extends \core_filters\text_filter {
                 if (strcasecmp($cm->name, $match[2]) == 0) {
                     $options = isset($match[3]) ? $match[3] : '';
                     $params = (object) [
-                        'id' => $cm->id,
                         'type' => $match[1],
                         'options' => isset($match[3]) ? $match[3] : '',
                         'cmid' => $cm->id,
                         'title' => $cm->name,
-                        'url' => $cm->url,
                     ];
 
                     $embed = $OUTPUT->render_from_template('filter_lti/embed-lti', $params);
