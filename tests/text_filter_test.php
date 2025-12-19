@@ -43,8 +43,6 @@ final class text_filter_test extends \advanced_testcase {
      * @return void
      */
     public function test_links(): void {
-        global $PAGE;
-
         // Create a test course.
         $course = $this->getDataGenerator()->create_course();
         $context = \context_course::instance($course->id);
@@ -65,7 +63,7 @@ final class text_filter_test extends \advanced_testcase {
             ['course' => $course->id, 'name' => 'mediasite 1']
         );
 
-        $page1 = $this->getDataGenerator()->create_module(
+        $this->getDataGenerator()->create_module(
             'page',
             ['course' => $course->id, 'name' => 'page 1']
         );
