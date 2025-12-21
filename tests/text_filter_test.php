@@ -194,4 +194,37 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertStringContainsString("title=\"{$mediasite1->name}\"", $filtered);
         $this->assertStringContainsString("data-filter_lti-cmid=\"{$mediasite1->cmid}\"", $filtered);
     }
+
+    /**
+     * Test that prefixes with special regex characters are properly escaped.
+     *
+     * @covers \filter_lti
+     * @return void
+     */
+    public function test_prefixes_with_special_characters(): void {
+        // Set custom prefixes with regex special characters.
+        set_config('customprefixes', 'test.prefix|test+tool|test(app)', 'filter_lti');
+
+        // Create a test course.
+        $course = $this->getDataGenerator()->create_course();
+        $context = \context_course::instance($course->id);
+
+        // Create modules.
+        $test1 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'test 1']
+        );
+
+        // Format text with the prefixes.
+        $html = '<p>Test with special chars</p>
+            <p>{test.prefix:test 1}</p>
+            <p>{test+tool:test 1}</p>
+            <p>{test(app):test 1}</p>';
+
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
+
+        // All prefixes should work despite special characters.
+        $this->assertStringContainsString("title=\"{$test1->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$test1->cmid}\"", $filtered);
+    }
 }
