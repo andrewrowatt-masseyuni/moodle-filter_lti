@@ -42,7 +42,12 @@ class text_filter extends \core_filters\text_filter {
             $customprefixes = 'lti|padlet|mediasite';
         }
 
-        $pattern = '/\{(' . $customprefixes . '):([^{|}]+)(?:\|(.+))?\}/';
+        // Escape each prefix for use in regex pattern.
+        $prefixes = explode('|', $customprefixes);
+        $escapedprefixes = array_map('preg_quote', $prefixes, array_fill(0, count($prefixes), '/'));
+        $prefixpattern = implode('|', $escapedprefixes);
+
+        $pattern = '/\{(' . $prefixpattern . '):([^{|}]+)(?:\|(.+))?\}/';
         if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER) === false) {
             return $text;
         }
