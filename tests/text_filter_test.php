@@ -100,4 +100,98 @@ final class text_filter_test extends \advanced_testcase {
 
         $this->assertStringContainsString("{page:page 1}", $filtered);
     }
+
+    /**
+     * Test custom prefixes setting.
+     *
+     * @covers \filter_lti
+     * @return void
+     */
+    public function test_custom_prefixes(): void {
+        // Set custom prefixes.
+        set_config('customprefixes', 'custom1|custom2', 'filter_lti');
+
+        // Create a test course.
+        $course = $this->getDataGenerator()->create_course();
+        $context = \context_course::instance($course->id);
+
+        // Create modules.
+        $custom1 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'custom 1']
+        );
+
+        $custom2 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'custom 2']
+        );
+
+        // Format text with custom prefixes.
+        $html = '<p>Test custom1</p>
+            <p>{custom1:custom 1}</p>
+            <p>Test custom2</p>
+            <p>{custom2:custom 2}</p>
+            <p>Test old prefix should not work</p>
+            <p>{lti:custom 1}</p>';
+
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
+
+        // Custom prefixes should work.
+        $this->assertStringContainsString("title=\"{$custom1->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$custom1->cmid}\"", $filtered);
+        $this->assertStringContainsString("title=\"{$custom2->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$custom2->cmid}\"", $filtered);
+
+        // Old prefix should not work.
+        $this->assertStringContainsString("{lti:custom 1}", $filtered);
+    }
+
+    /**
+     * Test default prefixes when setting is not configured.
+     *
+     * @covers \filter_lti
+     * @return void
+     */
+    public function test_default_prefixes(): void {
+        // Ensure custom prefixes is empty or not set.
+        set_config('customprefixes', '', 'filter_lti');
+
+        // Create a test course.
+        $course = $this->getDataGenerator()->create_course();
+        $context = \context_course::instance($course->id);
+
+        // Create modules.
+        $lti1 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'lti 1']
+        );
+
+        $padlet1 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'padlet 1']
+        );
+
+        $mediasite1 = $this->getDataGenerator()->create_module(
+            'page',
+            ['course' => $course->id, 'name' => 'mediasite 1']
+        );
+
+        // Format text with default prefixes.
+        $html = '<p>Test lti</p>
+            <p>{lti:lti 1}</p>
+            <p>Test padlet</p>
+            <p>{padlet:padlet 1}</p>
+            <p>Test mediasite</p>
+            <p>{mediasite:mediasite 1}</p>';
+
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
+
+        // Default prefixes should work.
+        $this->assertStringContainsString("title=\"{$lti1->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$lti1->cmid}\"", $filtered);
+        $this->assertStringContainsString("title=\"{$padlet1->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$padlet1->cmid}\"", $filtered);
+        $this->assertStringContainsString("title=\"{$mediasite1->name}\"", $filtered);
+        $this->assertStringContainsString("data-filter_lti-cmid=\"{$mediasite1->cmid}\"", $filtered);
+    }
 }
