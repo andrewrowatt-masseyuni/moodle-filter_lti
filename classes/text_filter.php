@@ -36,7 +36,14 @@ class text_filter extends \core_filters\text_filter {
         }
         $courseid = $coursectx->instanceid;
 
-        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER) === false) {
+        // Get custom prefixes from settings.
+        $customprefixes = get_config('filter_lti', 'customprefixes');
+        if (empty($customprefixes)) {
+            $customprefixes = 'lti|padlet|mediasite';
+        }
+
+        $pattern = '/\{(' . $customprefixes . '):([^{|}]+)(?:\|(.+))?\}/';
+        if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER) === false) {
             return $text;
         }
 
@@ -65,7 +72,7 @@ class text_filter extends \core_filters\text_filter {
             }
         }
 
-        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER)) {
             $unmatchednames = [];
             foreach ($matches as $match) {
                 $unmatchednames[] = $match[2];
