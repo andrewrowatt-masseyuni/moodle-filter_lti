@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * String file for filter_lti.
+ * Settings for filter_lti.
  *
  * @package    filter_lti
  * @copyright  2022 Massey University
@@ -25,9 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['customprefixes'] = 'Custom prefixes';
-$string['customprefixes_desc'] = 'Custom prefixes for LTI filter tags, separated by pipe character (e.g., mediasite|padlet)';
-$string['filtername'] = 'LTI (External tool) Filter';
-$string['oneormoretagsunmatched'] = '<div><b>Warning: </b>The following name(s) were were not able to be matched: <b>{$a}</b>. Please ensure that the corresponding LTI activity exists in this course.</div><div><small>Students will not see this message.</small></div>';
-$string['pluginname'] = 'LTI (External tool) Filter';
-$string['privacy:metadata'] = 'This plugin does not store any data at all.';
+if ($ADMIN->fulltree) {
+    $settings->add(new admin_setting_configtext(
+        'filter_lti/customprefixes',
+        get_string('customprefixes', 'filter_lti'),
+        get_string('customprefixes_desc', 'filter_lti'),
+        'padlet|mediasite',
+        PARAM_TEXT
+    ));
+}

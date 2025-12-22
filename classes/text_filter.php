@@ -36,7 +36,22 @@ class text_filter extends \core_filters\text_filter {
         }
         $courseid = $coursectx->instanceid;
 
-        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER) === false) {
+        // Get custom prefixes from settings.
+        $allprefixes = 'lti';
+        $customprefixes = get_config('filter_lti', 'customprefixes');
+        if (empty($customprefixes)) {
+            $allprefixes .= '|mediasite|padlet';
+        } else {
+            $allprefixes .= "|$customprefixes";
+        }
+
+        // Escape each prefix for use in regex pattern.
+        $prefixes = explode('|', $allprefixes);
+        $escapedprefixes = array_map('preg_quote', $prefixes, array_fill(0, count($prefixes), '/'));
+        $prefixpattern = implode('|', $escapedprefixes);
+
+        $pattern = '/\{(' . $prefixpattern . '):([^{|}]+)(?:\|(.+))?\}/';
+        if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER) === false) {
             return $text;
         }
 
@@ -65,7 +80,7 @@ class text_filter extends \core_filters\text_filter {
             }
         }
 
-        if (preg_match_all('/\{(lti|padlet|mediasite):([^{|}]+)(?:\|(.+))?\}/', $text, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER)) {
             $unmatchednames = [];
             foreach ($matches as $match) {
                 $unmatchednames[] = $match[2];
