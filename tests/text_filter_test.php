@@ -91,6 +91,7 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertStringContainsString("data-filter_lti-cmid=\"{$padlet1->cmid}\"", $filtered);
         $this->assertStringContainsString("title=\"{$mediasite1->name}\"", $filtered);
         $this->assertStringContainsString("data-filter_lti-cmid=\"{$mediasite1->cmid}\"", $filtered);
+        $this->assertStringContainsString("filter_lti_options_16x9", $filtered);
 
         $this->assertStringContainsString("{lti:lti 2}", $filtered);
         $this->assertStringContainsString(
