@@ -37,13 +37,16 @@ class text_filter extends \core_filters\text_filter {
         $courseid = $coursectx->instanceid;
 
         // Get custom prefixes from settings.
+        $allprefixes = 'lti';
         $customprefixes = get_config('filter_lti', 'customprefixes');
         if (empty($customprefixes)) {
-            $customprefixes = 'lti|padlet|mediasite';
+            $allprefixes .= '|mediasite|padlet';
+        } else {
+            $allprefixes .= "|$customprefixes";
         }
 
         // Escape each prefix for use in regex pattern.
-        $prefixes = explode('|', $customprefixes);
+        $prefixes = explode('|', $allprefixes);
         $escapedprefixes = array_map('preg_quote', $prefixes, array_fill(0, count($prefixes), '/'));
         $prefixpattern = implode('|', $escapedprefixes);
 

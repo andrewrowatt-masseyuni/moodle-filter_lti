@@ -141,9 +141,6 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertStringContainsString("data-filter_lti-cmid=\"{$custom1->cmid}\"", $filtered);
         $this->assertStringContainsString("title=\"{$custom2->name}\"", $filtered);
         $this->assertStringContainsString("data-filter_lti-cmid=\"{$custom2->cmid}\"", $filtered);
-
-        // Old prefix should not work.
-        $this->assertStringContainsString("{lti:custom 1}", $filtered);
     }
 
     /**
@@ -155,6 +152,8 @@ final class text_filter_test extends \advanced_testcase {
     public function test_default_prefixes(): void {
         // Ensure custom prefixes is empty or not set.
         set_config('customprefixes', '', 'filter_lti');
+
+        echo get_config('filter_lti', 'customprefixes');
 
         // Create a test course.
         $course = $this->getDataGenerator()->create_course();

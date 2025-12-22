@@ -30,7 +30,7 @@ if ($ADMIN->fulltree) {
         'filter_lti/customprefixes',
         get_string('customprefixes', 'filter_lti'),
         get_string('customprefixes_desc', 'filter_lti'),
-        'lti|padlet|mediasite',
+        'padlet|mediasite',
         PARAM_TEXT
     ));
 }
