@@ -33,4 +33,15 @@ if ($ADMIN->fulltree) {
         'padlet|mediasite',
         PARAM_TEXT
     ));
+
+    $settings->add(new admin_setting_configtextarea(
+        'filter_lti/customprefixcss',
+        get_string('customprefixcss', 'filter_lti'),
+        get_string('customprefixcss_desc', 'filter_lti'),
+        '',
+        PARAM_RAW,
+        60,
+        10,
+        'theme_reset_all_caches'
+    ));
 }
