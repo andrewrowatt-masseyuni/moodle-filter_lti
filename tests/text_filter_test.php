@@ -49,22 +49,22 @@ final class text_filter_test extends \advanced_testcase {
 
         // Create lti modules.
         $lti1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'lti 1']
         );
 
         $padlet1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'padlet 1']
         );
 
         $mediasite1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'mediasite 1']
         );
 
         $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'page 1']
         );
 
@@ -118,12 +118,12 @@ final class text_filter_test extends \advanced_testcase {
 
         // Create modules.
         $custom1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'custom 1']
         );
 
         $custom2 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'custom 2']
         );
 
@@ -162,17 +162,17 @@ final class text_filter_test extends \advanced_testcase {
 
         // Create modules.
         $lti1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'lti 1']
         );
 
         $padlet1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'padlet 1']
         );
 
         $mediasite1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'mediasite 1']
         );
 
@@ -211,7 +211,7 @@ final class text_filter_test extends \advanced_testcase {
 
         // Create modules.
         $test1 = $this->getDataGenerator()->create_module(
-            'page',
+            'lti',
             ['course' => $course->id, 'name' => 'test 1']
         );
 

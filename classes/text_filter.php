@@ -59,7 +59,7 @@ class text_filter extends \core_filters\text_filter {
         $cms = $modinfo->get_cms();
 
         foreach ($cms as $cm) {
-            if ($cm->modname != 'page') {
+            if ($cm->modname != 'lti') {
                 continue;
             }
 
