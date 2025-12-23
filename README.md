@@ -1,8 +1,10 @@
 # LTI Filter #
 
-TO-DO Describe the plugin shortly here.
+A Moodle text filter that enables embedding LTI (Learning Tools Interoperability) external tools using simple tag syntax within course content.
 
-TO-DO Provide more detailed description here.
+## Description ##
+
+The LTI Filter allows instructors to easily embed configured LTI external tools (such as Mediasite and Padlet) in course content using a simple markup syntax. Rather than manually creating and linking to individual LTI activities, instructors can use tags like `{lti:ActivityName}` or `{mediasite:ActivityName}` within text to automatically embed the corresponding LTI activity. The filter automatically matches tag names to existing LTI activities in the course and generates the appropriate embedded content (iframe). If a tag cannot be matched to an activity, instructors are notified with a warning (students do not see this message). Custom prefixes can be configured to support additional resource types beyond the default LTI and common integrations like Mediasite and Padlet. This plugin was inspired by Filter H5P (https://moodle.org/plugins/filter_h5p).
 
 ## Installing via uploaded ZIP file ##
 
