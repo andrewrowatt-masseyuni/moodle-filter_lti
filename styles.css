@@ -1,6 +1,4 @@
 div.filter_lti {
-    border: 1px solid red;
-
     iframe {
         position: absolute;
         top: 0;
@@ -14,20 +12,21 @@ div.filter_lti {
     .filter_lti_inner {
         position: relative;
         width: 100%;
-        height: calc(90vh - 100px); /* 100px is the size of the Snap header */
+        height: calc(100vh - 100px - 2em); /* 100px is the size of the Snap header, 2em provides a margin */
+        max-height: calc(100vh - 100px - 2em); /* 100px is the size of the Snap header, 2em provides a margin */
         background-color: #eee;
     }
 
     &.filter_lti_type_mediasite {
         .filter_lti_inner {
-            height: 100%;
-            padding-bottom: 66%;
+            height: auto;
+            aspect-ratio: 4 /3;
         }
     }
 
     &.filter_lti_options_16x9 {
         .filter_lti_inner {
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            aspect-ratio: 16 / 9;
         }
     }
 
