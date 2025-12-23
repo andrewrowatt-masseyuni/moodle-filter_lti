@@ -31,3 +31,4 @@ $string['filtername'] = 'LTI (External tool) Filter';
 $string['oneormoretagsunmatched'] = '<div><b>Warning: </b>The following name(s) were were not able to be matched: <b>{$a}</b>. Please ensure that the corresponding LTI activity exists in this course.</div><div><small>Students will not see this message.</small></div>';
 $string['pluginname'] = 'LTI (External tool) Filter';
 $string['privacy:metadata'] = 'This plugin does not store any data at all.';
+$string['togglezoom'] = 'Zoom in/out of region';

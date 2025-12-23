@@ -40,8 +40,9 @@
     }
 }}
 <div class="filter_lti filter_lti_container filter_lti_type_{{type}}{{#options}} filter_lti_options_{{options}}{{/options}}" data-filter_lti-cmid="{{cmid}}">
+<input type="checkbox" class="filter_lti_zoom_toggle" name="enabled{{cmid}}" id="enabled{{cmid}}"/><label for="enabled{{cmid}}" aria-label="{{#str}}togglezoom, filter_lti{{/str}}" title="{{#str}}togglezoom, filter_lti{{/str}}" class="btn btn-light btn-sm">{{#pix}}e/fullscreen,core{{/pix}}{{#str}}togglezoom, filter_lti{{/str}}</label>
 <div class="filter_lti_inner">
-<iframe class="lti_filter_contentframe" src="{{globals.config.wwwroot}}/mod/lti/launch.php?id={{cmid}}" allowfullscreen="allowfullscreen" style="border: 0;" title="{{title}}">
+<iframe class="lti_filter_contentframe" src="{{globals.config.wwwroot}}/mod/lti/launch.php?id={{cmid}}" allowfullscreen="allowfullscreen" title="{{title}}">
 </iframe>
 </div>
 </div>
