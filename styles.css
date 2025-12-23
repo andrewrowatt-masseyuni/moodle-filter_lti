@@ -1,20 +1,27 @@
 div.filter_lti {
     iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         border: none;
     }
 
+    .filter_lti_zoom_toggle {
+        opacity: 0;
+        margin: 0;
+        position: absolute;
+        cursor: pointer;
+    }
+
+    label {
+        margin-left: auto;
+        display: block;
+        width: fit-content;
+    }
 
     .filter_lti_inner {
-        position: relative;
         width: 100%;
         height: calc(100vh - 100px - 2em); /* 100px is the size of the Snap header, 2em provides a margin */
         max-height: calc(100vh - 100px - 2em); /* 100px is the size of the Snap header, 2em provides a margin */
-        background-color: #eee;
     }
 
     &.filter_lti_type_mediasite {
@@ -39,6 +46,22 @@ div.filter_lti {
 
         div:has(small) {
             text-align: right;
+        }
+    }
+
+    &:has(.filter_lti_zoom_toggle:checked) {
+        position: fixed;
+        top: 2em;
+        left: 2em;
+        bottom: 2em;
+        right: 2em;
+        background-color: white;
+        box-shadow: 0 8px 16px 0 #0007;
+        padding: 1em;
+        z-index: 1060; /* To go over the Snap header */
+
+        .filter_lti_inner {
+            max-height: calc(100vh - 8em);
         }
     }
 }
