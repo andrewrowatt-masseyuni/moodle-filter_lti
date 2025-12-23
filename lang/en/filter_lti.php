@@ -25,10 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['customprefixes'] = 'Custom prefixes';
-$string['customprefixes_desc'] = 'Custom prefixes for LTI filter tags, separated by pipe character (e.g., mediasite|padlet)';
 $string['customprefixcss'] = 'Custom prefix CSS';
 $string['customprefixcss_desc'] = 'Custom CSS styles to apply to LTI embeds. You can use this to style embedded content based on custom prefixes or other attributes.';
+$string['customprefixes'] = 'Custom prefixes';
+$string['customprefixes_desc'] = 'Custom prefixes for LTI filter tags, separated by pipe character (e.g., mediasite|padlet)';
 $string['filtername'] = 'LTI (External tool) Filter';
 $string['oneormoretagsunmatched'] = '<div><b>Warning: </b>The following name(s) were were not able to be matched: <b>{$a}</b>. Please ensure that the corresponding LTI activity exists in this course.</div><div><small>Students will not see this message.</small></div>';
 $string['pluginname'] = 'LTI (External tool) Filter';
